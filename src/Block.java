@@ -24,13 +24,13 @@ public class Block {
     this.num = num;
     this.amount = amount;
     this.prevHash = prevHash;
-    byte[] temp = ByteBuffer.allocate(8).putInt(num).putInt(amount).array();
-    long i = 0;
+    byte[] temp = ByteBuffer.allocate(8).putInt(num).putInt(amount).array(); //stores input in byte array format
+    long i = 0; 
     byte[] tempNonce = null;
     byte[] tempHash = null;
     Hash h = null;
     boolean run = true;
-    while (run) {
+    while (run) { //loop through hashes until a valid hash is found
       MessageDigest md = MessageDigest.getInstance("sha-256");
       md.update(temp);
       if (prevHash.getData() != null) {
@@ -80,15 +80,15 @@ public class Block {
    */
   public Hash createHash(int num, int amount, Hash prevHash, long nonce)
       throws NoSuchAlgorithmException {
-    byte[] temp = ByteBuffer.allocate(8).putInt(num).putInt(amount).array();
+    byte[] temp = ByteBuffer.allocate(8).putInt(num).putInt(amount).array(); //stores inputs in byte array
     MessageDigest md = MessageDigest.getInstance("sha-256");
     md.update(temp);
-    if (prevHash.getData() != null) {
+    if (prevHash.getData() != null) { //aquires previous hash data
       md.update(prevHash.getData());
     }
     byte[] tempNonce = ByteBuffer.allocate(8).putLong(nonce).array();
     md.update(tempNonce);
-    byte[] tempHash = md.digest();
+    byte[] tempHash = md.digest(); //creates hash
     return new Hash(tempHash);
   }
 
